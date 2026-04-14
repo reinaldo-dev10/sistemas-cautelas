@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Expedição Digital - Diretoria de Tecnologia da Informação.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="admin-panel">
+            <header class="header-moderno">
+                <div class="header-side-img left">
+                    <img src="./imgs/brasão.png" alt="Brasão de Aparecida">
+                </div>
+
+                <div class="header-center-text">
+                    <h2>Expedição Digital</h2>
+                    <p>Prefeitura Municipal de Aparecida</p>
+                    <p>Secretaria Municipal de Administração</p>
+                    <p>💻 Diretoria de Tecnologia da Informação 💻</p>
+                </div>
+
+                <div class="header-side-img right">
+                    <img src="./imgs/logo ti.png" alt="Logo TI">
+                </div>
+            </header>
+
+            <span class="section-title">Informações Gerais</span>
+            <div class="grid-form">
+                <div class="input-group"><label>Nº Expedição:</label><input type="text" id="campo-expedicao" readonly>
+                </div>
+                <div class="input-group"><label>NF-E</label><input type="text" id="nfe" placeholder="000"></div>
+                <div class="input-group">
+                    <label>Chave de Acesso</label>
+                    <input type="text" id="chave" placeholder="0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000"
+                        maxlength="54" oninput="mascararChave(this)">
+                </div>
+                <div class="input-group"><label>Processo Administrativo</label><input type="text" id="proc_adm"
+                        placeholder="000/202..."></div>
+                <div class="input-group"><label>Modalidade/nº</label><input type="text" id="modalidade"
+                        placeholder="Pregão Eletrônico"></div>
+                <div class="input-group"><label>Descritivo</label><input type="text" id="descritivo"
+                        placeholder="Aquisição de Bem..."></div>
+                <div class="input-group"><label>Data Recebimento</label><input type="date" id="dt_rec"></div>
+                <div class="input-group"><label>Data Expedição</label><input type="date" id="dt_exp"></div>
+
+
+                <div class="input-group">
+                    <label>Secretarias</label>
+                    <select id="secretaria" onchange="atualizarDependencias()">
+                        <option value="">Selecione uma Secretaria</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Dependências</label>
+                    <select id="dependencia">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+
+            <span class="section-title">Itens e Equipamentos</span>
+            <div id="items-wrapper">
+                <div class="item-row">
+                    <input type="text" placeholder="Descrição do Equipamento" class="item-desc">
+                    <input type="text" placeholder="Número de Série" class="item-serie">
+                    <input type="number" placeholder="Qtd" class="item-qtd" value="1">
+                    <button title="Remover" class="btn btn-remove" onclick="this.parentElement.remove()">✕</button>
+                </div>
+            </div>
+            <button class="btn btn-add" onclick="adicionarLinha()">+ Adicionar outro equipamento</button>
+
+            <div class="actions-footer">
+                <div class="button-row">
+                    <button class="btn btn-save" onclick="salvarDados()">Salvar Registro</button>
+                    <button class="btn btn-view" onclick="toggleVisualizacao()">Visualizar Layout</button>
+                    <button class="btn btn-print" onclick="window.print()">Gerar Impressão</button>
+                    <button class="btn btn-search" onclick="abrirModalPesquisa()">🔍 Pesquisar Registro</button>
+                </div>
+
+                <div class="button-row">
+                    <button onclick="exportarBackup()" class="btn btn-backup-out">📥 Exportar Backup</button>
+                    <button onclick="document.getElementById('input-importar').click()" class="btn btn-backup-in">📤
+                        Importar Backup</button>
+                    <input type="file" id="input-importar" style="display: none;" accept=".json"
+                        onchange="importarBackup(this)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-pesquisa" class="modal">
+        <div class="modal-content">
+            <h3>Pesquisar Registros</h3>
+            <input type="text" id="input-busca" placeholder="Busque por Nº, Secretaria ou Setor (ex: SAMU, CRAS...)"
+                onkeyup="filtrarPesquisa()">
+            <div class="lista-resultados" id="lista-resultados">
+            </div><br>
+            <button onclick="fecharModalPesquisa()" class="btn btn-remove">Fechar</button>
+        </div>
+    </div>
+
+    <div id="documento-final">
+        <div class="print-header">
+            <div class="print-logo">
+                <img src="./imgs/brasão.png" width="80">
+            </div>
+            <div class="print-title">
+                PREFEITURA MUNICIPAL DE APARECIDA<br>
+                SECRETARIA MUNICIPAL DE ADMINISTRAÇÃO<br>
+                DIRETORIA DE TECNOLOGIA DA INFORMAÇÃO<br>
+            </div>
+            <div class="print-exp">
+                <span class="label-sm">EXPEDIÇÃO:</span> <b id="view-exp" style="font-size: 14px;"></b><br>
+                <span class="label-sm">NF-E:</span> <span id="view-nfe"></span><br>
+                <span class="label-sm">CHAVE:</span>
+                <div style="font-size:8px; word-break: break-all" id="view-chave"></div>
+            </div>
+        </div>
+
+        <div class="print-row">
+            <div class="print-col" style="flex: 1;"><span class="label-sm">PROCESSO ADM:</span> <span
+                    id="view-proc"></span></div>
+            <div class="print-col" style="flex: 1;"><span class="label-sm">MODALIDADE:</span> <span
+                    id="view-mod"></span></div>
+            <div class="print-col" style="flex: 2;"><span class="label-sm">DESCRITIVO:</span> <span
+                    id="view-desc"></span></div>
+        </div>
+
+        <div class="print-row">
+            <div class="print-col"><span class="label-sm">DATA DE RECEBIMENTO:</span> <span id="view-dt-rec"></span>
+            </div>
+            <div class="print-col"><span class="label-sm">DATA DE EXPEDIÇÃO:</span> <span id="view-dt-exp"></span>
+            </div>
+            <div class="print-col" style="text-align: right; border-right: none;"><span
+                    class="label-sm">SECRETARIA/DEPENDÊNCIAS:</span> <b id="view-sec"></b></div>
+        </div>
+
+        <table class="print-table">
+            <thead>
+                <tr>
+                    <th width="40">ITEM</th>
+                    <th>DESCRIÇÃO</th>
+                    <th width="180">Nº SÉRIE</th>
+                    <th width="100">QUANTIDADE</th>
+                </tr>
+            </thead>
+            <tbody id="corpo-tabela"></tbody>
+        </table>
+    </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
