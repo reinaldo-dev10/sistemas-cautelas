@@ -1,6 +1,6 @@
 // 1. CONFIGURAÇÕES INICIAIS E PERSISTÊNCIA
 if (!localStorage.getItem('exp_num')) {
-    localStorage.setItem('exp_num', 847);
+    localStorage.setItem('exp_num', 000);
 }
 
 if (!localStorage.getItem('db_historico_exp')) {
