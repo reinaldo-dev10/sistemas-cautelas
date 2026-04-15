@@ -41,7 +41,8 @@
                 </div>
                 <div class="input-group">
                     <label>Chave de Acesso</label>
-                    <input type="text" id="chave" placeholder="0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000" maxlength="54" oninput="mascararChave(this)">
+                    <input type="text" id="chave" placeholder="0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000"
+                        maxlength="54" oninput="mascararChave(this)">
                 </div>
                 <div class="input-group">
                     <label>Processo Administrativo</label>
@@ -101,8 +102,10 @@
 
                 <div class="button-row">
                     <button onclick="exportarBackup()" class="btn btn-backup-out">📥 Exportar Backup</button>
-                    <button onclick="document.getElementById('input-importar').click()" class="btn btn-backup-in">📤 Importar Backup</button>
-                    <input type="file" id="input-importar" style="display: none;" accept=".json" onchange="importarBackup(this)">
+                    <button onclick="document.getElementById('input-importar').click()" class="btn btn-backup-in">📤
+                        Importar Backup</button>
+                    <input type="file" id="input-importar" style="display: none;" accept=".json"
+                        onchange="importarBackup(this)">
                 </div>
             </div>
         </div>
@@ -111,7 +114,8 @@
     <div id="modal-pesquisa" class="modal">
         <div class="modal-content">
             <h3>Pesquisar Registros</h3>
-            <input type="text" id="input-busca" placeholder="Busque por Nº, Patrimônio, Secretaria ou Setor..." onkeyup="filtrarPesquisa()">
+            <input type="text" id="input-busca" placeholder="Busque por Nº, Patrimônio, Secretaria ou Setor..."
+                onkeyup="filtrarPesquisa()">
             <div class="lista-resultados" id="lista-resultados"></div>
             <br>
             <button onclick="fecharModalPesquisa()" class="btn btn-remove">Fechar</button>
@@ -137,15 +141,20 @@
         </div>
 
         <div class="print-row">
-            <div class="print-col" style="flex: 1;"><span class="label-sm">PROCESSO ADM:</span> <span id="view-proc"></span></div>
-            <div class="print-col" style="flex: 1;"><span class="label-sm">MODALIDADE:</span> <span id="view-mod"></span></div>
-            <div class="print-col" style="flex: 2;"><span class="label-sm">DESCRITIVO:</span> <span id="view-desc"></span></div>
+            <div class="print-col" style="flex: 1;"><span class="label-sm">PROCESSO ADM:</span> <span
+                    id="view-proc"></span></div>
+            <div class="print-col" style="flex: 1;"><span class="label-sm">MODALIDADE:</span> <span
+                    id="view-mod"></span></div>
+            <div class="print-col" style="flex: 2;"><span class="label-sm">DESCRITIVO:</span> <span
+                    id="view-desc"></span></div>
         </div>
 
         <div class="print-row">
-            <div class="print-col"><span class="label-sm">DATA DE RECEBIMENTO:</span> <span id="view-dt-rec"></span></div>
+            <div class="print-col"><span class="label-sm">DATA DE RECEBIMENTO:</span> <span id="view-dt-rec"></span>
+            </div>
             <div class="print-col"><span class="label-sm">DATA DE EXPEDIÇÃO:</span> <span id="view-dt-exp"></span></div>
-            <div class="print-col" style="text-align: right; border-right: none;"><span class="label-sm">SECRETARIA/DEPENDÊNCIAS:</span> <b id="view-sec"></b></div>
+            <div class="print-col" style="text-align: right; border-right: none;"><span
+                    class="label-sm">SECRETARIA/DEPENDÊNCIAS:</span> <b id="view-sec"></b></div>
         </div>
 
         <table class="print-table">
@@ -154,7 +163,8 @@
                     <th width="40">ITEM</th>
                     <th>DESCRIÇÃO</th>
                     <th width="140">Nº SÉRIE</th>
-                    <th width="120">Nº PATRIMÔNIO</th> <th width="80">QUANT.</th>
+                    <th width="120">Nº PATRIMÔNIO</th>
+                    <th width="80">QUANT.</th>
                 </tr>
             </thead>
             <tbody id="corpo-tabela"></tbody>
@@ -163,4 +173,5 @@
 
     <script src="./js/script.js"></script>
 </body>
+
 </html>
