@@ -64,15 +64,26 @@
             </div>
 
             <span class="section-title">Itens e Equipamentos</span>
-            <div id="items-wrapper">
-                <div class="item-row">
-                    <input type="text" placeholder="Descrição do Equipamento" class="item-desc">
-                    <input type="text" placeholder="Número de Série" class="item-serie">
-                    <input type="number" placeholder="Qtd" class="item-qtd" value="1">
-                    <button title="Remover" class="btn btn-remove" onclick="this.parentElement.remove()">✕</button>
-                </div>
-            </div>
-            <button class="btn btn-add" onclick="adicionarLinha()">+ Adicionar outro equipamento</button>
+<div id="items-wrapper">
+    <div class="item-row">
+        <input type="text" placeholder="Descrição do Equipamento" class="item-desc">
+        <input type="text" placeholder="Número de Série" class="item-serie">
+        <input type="text" placeholder="Nº Patrimônio" class="item-patrimonio"> <input type="number" placeholder="Qtd" class="item-qtd" value="1">
+        <button title="Remover" class="btn btn-remove" onclick="this.parentElement.remove()">✕</button>
+    </div>
+</div>
+
+<table class="print-table">
+    <thead>
+        <tr>
+            <th width="40">ITEM</th>
+            <th>DESCRIÇÃO</th>
+            <th width="140">Nº SÉRIE</th>
+            <th width="100">PATRIMÔNIO</th> <th width="80">QUANT.</th>
+        </tr>
+    </thead>
+    <tbody id="corpo-tabela"></tbody>
+</table>
 
             <div class="actions-footer">
                 <div class="button-row">

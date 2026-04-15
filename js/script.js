@@ -75,6 +75,8 @@ const dadosVinculados = {
     ]
 };
 
+
+
 // 3. FUNÇÕES DE INICIALIZAÇÃO E INTERFACE
 function init() {
     carregarSecretarias();
@@ -114,9 +116,9 @@ function adicionarLinha() {
     div.innerHTML = `
         <input type="text" placeholder="Descrição do Equipamento" class="item-desc">
         <input type="text" placeholder="Número de Série" class="item-serie">
+        <input type="text" placeholder="Nº Patrimônio" class="item-patrimonio">
         <input type="number" placeholder="Qtd" class="item-qtd" value="1">
-        <button class="btn btn-remove" onclick="this.parentElement.remove()">✕</button>
-    `;
+        <button class="btn btn-remove" onclick="this.parentElement.remove()">✕</button>`;
     wrapper.appendChild(div);
 }
 
@@ -134,11 +136,12 @@ function salvarDados() {
         dt_exp: document.getElementById('dt_exp').value,
         sec: document.getElementById('secretaria').value,
         dep: document.getElementById('dependencia').value,
-        status: document.getElementById('status_exp')?.value || 'Entregue',
+        status: 'Entregue',
         data_registro: new Date().toLocaleString(),
         itens: Array.from(document.querySelectorAll('.item-row')).map(row => ({
             d: row.querySelector('.item-desc').value,
             s: row.querySelector('.item-serie').value,
+            p: row.querySelector('.item-patrimonio').value, // NOVO
             q: row.querySelector('.item-qtd').value
         })).filter(i => i.d !== "")
     };
@@ -148,8 +151,7 @@ function salvarDados() {
     let historico = JSON.parse(localStorage.getItem('db_historico_exp') || '[]');
     historico.push(dados);
     localStorage.setItem('db_historico_exp', JSON.stringify(historico));
-    localStorage.setItem('db_modern_exp', JSON.stringify(dados));
-
+    
     alert(`Registro #${numAtual} salvo com sucesso!`);
 
     const proximo = parseInt(numAtual) + 1;
@@ -178,11 +180,12 @@ function renderizarImpressao(dados) {
             <td align="center">${index + 1}</td>
             <td>${item.d}</td>
             <td>${item.s || '-'}</td>
-            <td align="right">${String(item.q).padStart(2, '0')} unidade</td>
+            <td>${item.p || '-'}</td> <td align="right">${String(item.q).padStart(2, '0')} un</td>
         </tr>`;
     });
-    for (let i = dados.itens.length; i < 14; i++) {
-        tbody.innerHTML += `<tr><td></td><td></td><td></td><td></td></tr>`;
+    // Preenche linhas vazias para manter o layout do papel
+    for (let i = dados.itens.length; i < 12; i++) {
+        tbody.innerHTML += `<tr><td></td><td></td><td></td><td></td><td></td></tr>`;
     }
 }
 
@@ -198,10 +201,13 @@ function filtrarPesquisa() {
     const filtrados = historico.filter(r => {
         const matchGeral = r.exp.toString().includes(termo) ||
             r.sec.toLowerCase().includes(termo) ||
-            r.dep.toLowerCase().includes(termo) ||
-            r.chave.includes(termo);
+            r.dep.toLowerCase().includes(termo);
 
-        const matchItens = r.itens.some(i => i.d.toLowerCase().includes(termo) || i.s.toLowerCase().includes(termo));
+        const matchItens = r.itens.some(i => 
+            i.d.toLowerCase().includes(termo) || 
+            i.s.toLowerCase().includes(termo) || 
+            (i.p && i.p.toLowerCase().includes(termo)) // BUSCA POR PATRIMÔNIO
+        );
 
         return matchGeral || matchItens;
     });
@@ -210,9 +216,9 @@ function filtrarPesquisa() {
         const item = document.createElement('div');
         item.className = 'resultado-item';
         item.innerHTML = `
-            <div style="flex-grow: 1;">
+            <div class="res-info">
                 <strong>#${r.exp}</strong> - ${r.sec}<br>
-                <small>${r.dep} | Status: ${r.status}</small>
+                <small>${r.dep} | Itens: ${r.itens.length}</small>
             </div>
             <button onclick='carregarRegistroParaEdicao(${JSON.stringify(r)})' class='btn-carregar'>Carregar</button>
         `;
@@ -231,7 +237,6 @@ function carregarRegistroParaEdicao(dados) {
     document.getElementById('secretaria').value = dados.sec || "";
     atualizarDependencias();
     document.getElementById('dependencia').value = dados.dep || "";
-    if (document.getElementById('status_exp')) document.getElementById('status_exp').value = dados.status;
 
     const wrapper = document.getElementById('items-wrapper');
     wrapper.innerHTML = "";
@@ -241,6 +246,7 @@ function carregarRegistroParaEdicao(dados) {
         div.innerHTML = `
             <input type="text" value="${item.d}" class="item-desc">
             <input type="text" value="${item.s}" class="item-serie">
+            <input type="text" value="${item.p || ''}" class="item-patrimonio">
             <input type="number" value="${item.q}" class="item-qtd">
             <button class="btn btn-remove" onclick="this.parentElement.remove()">✕</button>
         `;
@@ -249,7 +255,6 @@ function carregarRegistroParaEdicao(dados) {
 
     renderizarImpressao(dados);
     fecharModalPesquisa();
-    alert(`Registro #${dados.exp} carregado no formulário.`);
 }
 
 // 7. BACKUP (IMPORT/EXPORT) E MÁSCARA
