@@ -124,8 +124,7 @@ select:focus {
 /* ITENS */
 .item-row {
     display: grid;
-    /* Ajustado de 4 para 5 colunas para incluir o patrimônio */
-    grid-template-columns: 2fr 1.2fr 1.2fr 0.6fr 45px;
+    grid-template-columns: 2fr 1.2fr 1.2fr 0.6fr 45px; /* 5 colunas agora */
     gap: 10px;
     margin-bottom: 12px;
 }

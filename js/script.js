@@ -112,13 +112,13 @@ function atualizarDependencias() {
 function adicionarLinha() {
     const wrapper = document.getElementById('items-wrapper');
     const div = document.createElement('div');
-    div.className = 'item-row';
+    div.className = 'item-row'; // Esta classe garante o alinhamento do CSS
     div.innerHTML = `
         <input type="text" placeholder="Descrição do Equipamento" class="item-desc">
         <input type="text" placeholder="Número de Série" class="item-serie">
         <input type="text" placeholder="Nº Patrimônio" class="item-patrimonio">
         <input type="number" placeholder="Qtd" class="item-qtd" value="1">
-        <button class="btn btn-remove" onclick="this.parentElement.remove()">✕</button>`;
+        <button class="btn btn-remove" title="Remover" onclick="this.parentElement.remove()">✕</button>`;
     wrapper.appendChild(div);
 }
 
