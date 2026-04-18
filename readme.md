@@ -57,6 +57,3 @@ Itens: Adicione os itens com seus respectivos Números de Série (obrigatórios 
 │   └── logo ti.png     # Identidade do departamento
 └── README.md           # Documentação técnica e operacional# cautela-digital
 # cautela-digital
-
-
-# cautela-digital
